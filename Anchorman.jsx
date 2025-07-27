@@ -25,8 +25,7 @@ anchormanPanel.margins = 15;
 var headerGroup = anchormanPanel.add("group");
 headerGroup.orientation = "row";
 headerGroup.alignment = "center";
-var headerText = headerGroup.add("statictext", undefined, "Anchorman");
-headerText.graphics.font = ScriptUI.newFont("Arial", "Bold", 14);
+headerGroup.spacing = 8;
 
 // 3x3 Anchor Point Grid
 var gridGroup = anchormanPanel.add("group");
@@ -117,10 +116,26 @@ keyframeBtn.onClick = function() {
     addAnchorKeyframes(batchMode);
 };
 
-// Footer info
+// Footer with logo
 var footerGroup = anchormanPanel.add("group");
+footerGroup.orientation = "row";
 footerGroup.alignment = "center";
-var footerText = footerGroup.add("statictext", undefined, "Select layers and click grid positions");
+footerGroup.spacing = 6;
+footerGroup.margins = [0, 10, 0, 0]; // Add 10px top margin
+
+// Add logo to footer
+try {
+    var logoFile = new File($.fileName.substring(0, $.fileName.lastIndexOf('/')) + '/anchorman-logo.png');
+    if (logoFile.exists) {
+        var footerLogo = footerGroup.add("image", undefined, logoFile);
+        footerLogo.preferredSize.width = 30;
+        footerLogo.preferredSize.height = 30;
+    }
+} catch (e) {
+    // Logo file not found, continue without it
+}
+
+var footerText = footerGroup.add("statictext", undefined, "You Stay Classy, After Effects.");
 footerText.graphics.font = ScriptUI.newFont("Arial", "Regular", 9);
 
 /**
