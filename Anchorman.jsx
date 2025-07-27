@@ -30,7 +30,7 @@ headerGroup.spacing = 8;
 // 3x3 Anchor Point Grid
 var gridGroup = anchormanPanel.add("group");
 gridGroup.orientation = "column";
-gridGroup.alignChildren = "center";
+gridGroup.alignChildren = "left";
 gridGroup.spacing = 3;
 
 // Grid title
@@ -117,7 +117,7 @@ var footerGroup = anchormanPanel.add("group");
 footerGroup.orientation = "row";
 footerGroup.alignment = "center";
 footerGroup.spacing = 6;
-footerGroup.margins = [0, 4, 0, 0]; // Add 4px top margin
+footerGroup.margins = [0, 14, 0, 0]; // Add 14px top margin
 
 // Add logo to footer
 try {
@@ -126,47 +126,61 @@ try {
         var footerLogo = footerGroup.add("image", undefined, logoFile);
         footerLogo.preferredSize.width = 30;
         footerLogo.preferredSize.height = 30;
-        footerLogo.helpTip = "Visit loveandlogic.co.uk for more info";
+        footerLogo.helpTip = "You Stay Classy, After Effects.";
         
-        // Make logo clickable - opens blog post
+        // Make logo clickable - opens main website
         footerLogo.onClick = function() {
-            try {
-                var url = "https://loveandlogic.co.uk/thoughts-feelings/anchorman-free-after-effect-script-plugin/";
-                if ($.os.indexOf("Windows") !== -1) {
-                    // Windows
-                    system.callSystem('cmd /c start "" "' + url + '"');
-                } else {
-                    // macOS
-                    system.callSystem('open "' + url + '"');
-                }
-            } catch (e) {
-                alert("Visit: loveandlogic.co.uk/thoughts-feelings/anchorman-free-after-effect-script-plugin/");
-            }
+            openURL("http://loveandlogic.co.uk/");
         };
     }
 } catch (e) {
     // Logo file not found, continue without it
 }
 
-var footerText = footerGroup.add("statictext", undefined, "You Stay Classy, After Effects.");
+var footerText = footerGroup.add("statictext", undefined, "Made by Love & Logic");
 footerText.graphics.font = ScriptUI.newFont("Arial", "Regular", 9);
-footerText.helpTip = "Visit loveandlogic.co.uk for more info";
+footerText.helpTip = "Visit Love & Logic website";
 
 // Make footer text clickable too
 footerText.onClick = function() {
+    openURL("http://loveandlogic.co.uk/");
+};
+
+/**
+ * Helper function to open URL in browser - uses multiple fallback methods
+ */
+function openURL(url) {
     try {
-        var url = "https://loveandlogic.co.uk/thoughts-feelings/anchorman-free-after-effect-script-plugin/";
+        // Method 1: Try using system.callSystem with proper escaping
         if ($.os.indexOf("Windows") !== -1) {
-            // Windows
-            system.callSystem('cmd /c start "" "' + url + '"');
+            // Windows - try multiple approaches
+            try {
+                system.callSystem('start "" "' + url + '"');
+                return;
+            } catch (e1) {
+                try {
+                    system.callSystem('cmd /c start "" "' + url + '"');
+                    return;
+                } catch (e2) {
+                    // Fall through to alert
+                }
+            }
         } else {
-            // macOS
-            system.callSystem('open "' + url + '"');
+            // macOS/Unix
+            try {
+                system.callSystem('open "' + url + '"');
+                return;
+            } catch (e3) {
+                // Fall through to alert
+            }
         }
     } catch (e) {
-        alert("Visit: loveandlogic.co.uk/thoughts-feelings/anchorman-free-after-effect-script-plugin/");
+        // system.callSystem failed completely
     }
-};
+    
+    // Fallback: Show alert with URL
+    alert("Please visit: " + url + "\n\n(Copy this URL to your browser)");
+}
 
 /**
  * Move anchor point to specified position
