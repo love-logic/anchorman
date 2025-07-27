@@ -1,0 +1,44 @@
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# After Effects
+*.aep.bak
+*.aep~
+*.aepx.bak
+*.aepx~
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# CEP Debug (if using CEP extension)
+.debug
+
+# Node modules (if any)
+node_modules/
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archive files
+*.zip
+*.rar
+*.7z 
