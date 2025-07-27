@@ -167,7 +167,7 @@ function moveAnchorPoint(position, keepVisual, batchMode) {
             }
             
             // Set new anchor point
-            layer.anchorPoint.setValue(newAnchor);
+            layer.anchorPoint.setValueAtTime(comp.time, newAnchor);
             
             // Compensate position to maintain visual placement
             if (keepVisual) {
@@ -185,7 +185,7 @@ function moveAnchorPoint(position, keepVisual, batchMode) {
                     newPosition.push(originalPosition[2]);
                 }
                 
-                layer.position.setValue(newPosition);
+                layer.position.setValueAtTime(comp.time, newPosition);
             }
             
             processedCount++;
