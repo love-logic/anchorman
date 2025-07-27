@@ -74,8 +74,7 @@ for (var row = 0; row < 3; row++) {
         // Event handler
         btn.onClick = function() {
             var keepVisual = keepVisualCheckbox.value;
-            var batchMode = batchModeCheckbox.value;
-            moveAnchorPoint(this.anchorPosition, keepVisual, batchMode);
+            moveAnchorPoint(this.anchorPosition, keepVisual);
         };
     }
 }
@@ -94,10 +93,7 @@ var keepVisualCheckbox = optionsGroup.add("checkbox", undefined, "Keep visual po
 keepVisualCheckbox.value = true;
 keepVisualCheckbox.helpTip = "Maintains layer's screen position when anchor point moves";
 
-// Batch mode checkbox  
-var batchModeCheckbox = optionsGroup.add("checkbox", undefined, "Batch mode");
-batchModeCheckbox.value = false;
-batchModeCheckbox.helpTip = "Apply to all selected layers (default: first selected only)";
+
 
 // Actions section
 var actionsGroup = anchormanPanel.add("group");
@@ -109,11 +105,11 @@ var actionsTitle = actionsGroup.add("statictext", undefined, "Actions");
 actionsTitle.graphics.font = ScriptUI.newFont("Arial", "Regular", 11);
 
 // Keyframe button
-var keyframeBtn = actionsGroup.add("button", undefined, "Keyframe Anchor Point");
+var keyframeBtn = actionsGroup.add("button", undefined, "◆ Keyframe Anchor Point");
+keyframeBtn.graphics.font = ScriptUI.newFont("Arial", "Regular", 14); // Larger font for bigger diamond
 keyframeBtn.helpTip = "Add keyframes to anchor point at current time";
 keyframeBtn.onClick = function() {
-    var batchMode = batchModeCheckbox.value;
-    addAnchorKeyframes(batchMode);
+    addAnchorKeyframes();
 };
 
 // Footer with logo
@@ -121,7 +117,7 @@ var footerGroup = anchormanPanel.add("group");
 footerGroup.orientation = "row";
 footerGroup.alignment = "center";
 footerGroup.spacing = 6;
-footerGroup.margins = [0, 10, 0, 0]; // Add 10px top margin
+footerGroup.margins = [0, 4, 0, 0]; // Add 4px top margin
 
 // Add logo to footer
 try {
@@ -130,6 +126,23 @@ try {
         var footerLogo = footerGroup.add("image", undefined, logoFile);
         footerLogo.preferredSize.width = 30;
         footerLogo.preferredSize.height = 30;
+        footerLogo.helpTip = "Visit loveandlogic.co.uk for more info";
+        
+        // Make logo clickable - opens blog post
+        footerLogo.onClick = function() {
+            try {
+                var url = "https://loveandlogic.co.uk/thoughts-feelings/anchorman-free-after-effect-script-plugin/";
+                if ($.os.indexOf("Windows") !== -1) {
+                    // Windows
+                    system.callSystem('cmd /c start "" "' + url + '"');
+                } else {
+                    // macOS
+                    system.callSystem('open "' + url + '"');
+                }
+            } catch (e) {
+                alert("Visit: loveandlogic.co.uk/thoughts-feelings/anchorman-free-after-effect-script-plugin/");
+            }
+        };
     }
 } catch (e) {
     // Logo file not found, continue without it
@@ -137,11 +150,28 @@ try {
 
 var footerText = footerGroup.add("statictext", undefined, "You Stay Classy, After Effects.");
 footerText.graphics.font = ScriptUI.newFont("Arial", "Regular", 9);
+footerText.helpTip = "Visit loveandlogic.co.uk for more info";
+
+// Make footer text clickable too
+footerText.onClick = function() {
+    try {
+        var url = "https://loveandlogic.co.uk/thoughts-feelings/anchorman-free-after-effect-script-plugin/";
+        if ($.os.indexOf("Windows") !== -1) {
+            // Windows
+            system.callSystem('cmd /c start "" "' + url + '"');
+        } else {
+            // macOS
+            system.callSystem('open "' + url + '"');
+        }
+    } catch (e) {
+        alert("Visit: loveandlogic.co.uk/thoughts-feelings/anchorman-free-after-effect-script-plugin/");
+    }
+};
 
 /**
  * Move anchor point to specified position
  */
-function moveAnchorPoint(position, keepVisual, batchMode) {
+function moveAnchorPoint(position, keepVisual) {
     app.beginUndoGroup("Anchorman: Move Anchor Point");
     
     try {
@@ -160,7 +190,7 @@ function moveAnchorPoint(position, keepVisual, batchMode) {
             return;
         }
         
-        var layersToProcess = batchMode ? selectedLayers : [selectedLayers[0]];
+        var layersToProcess = selectedLayers;
         var processedCount = 0;
         
         for (var i = 0; i < layersToProcess.length; i++) {
@@ -221,7 +251,7 @@ function moveAnchorPoint(position, keepVisual, batchMode) {
 /**
  * Add keyframes to anchor point property
  */
-function addAnchorKeyframes(batchMode) {
+function addAnchorKeyframes() {
     app.beginUndoGroup("Anchorman: Add Anchor Keyframes");
     
     try {
@@ -240,7 +270,7 @@ function addAnchorKeyframes(batchMode) {
             return;
         }
         
-        var layersToProcess = batchMode ? selectedLayers : [selectedLayers[0]];
+        var layersToProcess = selectedLayers;
         var processedCount = 0;
         
         for (var i = 0; i < layersToProcess.length; i++) {

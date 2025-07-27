@@ -15,18 +15,20 @@ A lightweight Script UI Panel that provides instant anchor point control with a 
 - **📦 Batch Mode** - Apply changes to multiple selected layers simultaneously  
 - **⏱️ Keyframe Support** - Add anchor point keyframes at current time
 - **🎨 Clean UI** - Compact, professional interface with helpful tooltips
-- **⚡ Lightweight** - Single `.jsx` file, no complex installation
+- **⚡ Lightweight** - Just 2 files (script + logo), no complex installation
 
 ## 🚀 Quick Start
 
 ### Installation
 
-1. **Download** `Anchorman.jsx` from this repository
-2. **Copy** to your After Effects ScriptUI Panels folder:
+1. **Download** both `Anchorman.jsx` and `anchorman-logo.png` from this repository
+2. **Copy both files** to your After Effects ScriptUI Panels folder:
    - **macOS**: `/Applications/Adobe After Effects [Version]/Scripts/ScriptUI Panels/`
    - **Windows**: `C:\Program Files\Adobe\Adobe After Effects [Version]\Support Files\Scripts\ScriptUI Panels\`
 3. **Restart** After Effects
 4. **Access** via `Window > Anchorman.jsx`
+
+**Note**: Both files must be in the same folder for the logo to display correctly.
 
 ### Usage
 
