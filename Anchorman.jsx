@@ -20,7 +20,6 @@ anchormanPanel.orientation = "column";
 anchormanPanel.alignChildren = "fill";
 anchormanPanel.spacing = 10;
 anchormanPanel.margins = 15;
-anchormanPanel.preferredSize.width = 280; // Minimum width for panel
 
 // Header
 var headerGroup = anchormanPanel.add("group");
@@ -28,19 +27,11 @@ headerGroup.orientation = "row";
 headerGroup.alignment = "center";
 headerGroup.spacing = 8;
 
-// Main content area - responsive layout
-var mainContentGroup = anchormanPanel.add("group");
-mainContentGroup.orientation = "column"; // Start with vertical, will adjust based on width
-mainContentGroup.alignChildren = "fill";
-mainContentGroup.spacing = 15;
-mainContentGroup.alignment = "fill";
-
-// Left side: 3x3 Anchor Point Grid
-var gridGroup = mainContentGroup.add("group");
+// 3x3 Anchor Point Grid
+var gridGroup = anchormanPanel.add("group");
 gridGroup.orientation = "column";
 gridGroup.alignChildren = "left";
 gridGroup.spacing = 3;
-gridGroup.preferredSize.width = 150; // Minimum width for grid
 
 // Grid title
 var gridTitle = gridGroup.add("statictext", undefined, "Anchor Point Position");
@@ -51,7 +42,6 @@ var gridPanel = gridGroup.add("panel");
 gridPanel.orientation = "column";
 gridPanel.spacing = 2;
 gridPanel.margins = 8;
-gridPanel.preferredSize.width = 130; // Fixed width for consistent grid
 
 // Grid positions and their labels
 var positions = [
@@ -89,16 +79,8 @@ for (var row = 0; row < 3; row++) {
     }
 }
 
-// Right side: Options and Actions
-var rightSideGroup = mainContentGroup.add("group");
-rightSideGroup.orientation = "column";
-rightSideGroup.alignChildren = "fill";
-rightSideGroup.spacing = 15;
-rightSideGroup.alignment = "fill"; // Allow to expand
-rightSideGroup.preferredSize.width = 180; // Minimum width for right side
-
 // Options section
-var optionsGroup = rightSideGroup.add("group");
+var optionsGroup = anchormanPanel.add("group");
 optionsGroup.orientation = "column";
 optionsGroup.alignChildren = "left";
 optionsGroup.spacing = 8;
@@ -111,8 +93,10 @@ var keepVisualCheckbox = optionsGroup.add("checkbox", undefined, "Keep visual po
 keepVisualCheckbox.value = true;
 keepVisualCheckbox.helpTip = "Maintains layer's screen position when anchor point moves";
 
+
+
 // Actions section
-var actionsGroup = rightSideGroup.add("group");
+var actionsGroup = anchormanPanel.add("group");
 actionsGroup.orientation = "column";
 actionsGroup.alignChildren = "fill";
 actionsGroup.spacing = 5;
@@ -131,7 +115,7 @@ keyframeBtn.onClick = function() {
 // Footer with logo
 var footerGroup = anchormanPanel.add("group");
 footerGroup.orientation = "row";
-footerGroup.alignment = "left";
+footerGroup.alignment = "center";
 footerGroup.spacing = 6;
 footerGroup.margins = [0, 14, 0, 0]; // Add 14px top margin
 
@@ -161,48 +145,6 @@ footerText.helpTip = "Visit Love & Logic website";
 footerText.onClick = function() {
     openURL("http://loveandlogic.co.uk/");
 };
-
-/**
- * Responsive layout function - switches between horizontal and vertical based on panel width
- */
-function updateResponsiveLayout() {
-    try {
-        var panelWidth = anchormanPanel.size ? anchormanPanel.size.width : anchormanPanel.preferredSize.width;
-        var breakpoint = 380; // Width threshold for switching layout
-        
-        if (panelWidth >= breakpoint) {
-            // Wide enough for horizontal layout
-            if (mainContentGroup.orientation !== "row") {
-                mainContentGroup.orientation = "row";
-                gridGroup.alignment = "left";
-                rightSideGroup.alignment = "fill";
-                anchormanPanel.layout.layout(true);
-            }
-        } else {
-            // Too narrow, switch to vertical layout
-            if (mainContentGroup.orientation !== "column") {
-                mainContentGroup.orientation = "column";
-                gridGroup.alignment = "fill";
-                rightSideGroup.alignment = "fill";
-                anchormanPanel.layout.layout(true);
-            }
-        }
-    } catch (e) {
-        // Layout update failed, continue silently
-    }
-}
-
-// Set up resize handler for responsive behavior
-try {
-    anchormanPanel.onResize = function() {
-        updateResponsiveLayout();
-    };
-} catch (e) {
-    // onResize not supported, responsive behavior will work on initial load only
-}
-
-// Initial layout check
-updateResponsiveLayout();
 
 /**
  * Helper function to open URL in browser - uses multiple fallback methods
@@ -487,8 +429,7 @@ if (anchormanPanel instanceof Window) {
     anchormanPanel.show();
 }
 
-// Force layout refresh for dockable panels and apply responsive layout
+// Force layout refresh for dockable panels
 if (anchormanPanel instanceof Panel) {
     anchormanPanel.layout.layout(true);
-    updateResponsiveLayout(); // Apply responsive behavior
 } 
